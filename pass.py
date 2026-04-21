@@ -64,11 +64,24 @@ def main():
         #   Get random index from dictionary
         index = secrets.randbelow(len(characters_list))
 
+        #   Get key
+        key = list(characters_list)[index]
+
+        #   Change key's value by adding the number range
+        value = (characters_list.get(key) - 1)
+
+        #   Adding key's modified value
+        characters_list[key] = value
+
         #   Adding a character to password string
-        password += secrets.choice(characters_list[index])
+        password += secrets.choice(list(characters_list)[index])
+
+        #   If selection number is 0, the selected string isn't in use anymore
+        if value == 0:
+            characters_list.pop(key)
 
     #   Show generated password
-    print(f"{password} / {len(password)} / {extra}")
+    print(f"{password}")
 
 #   Run main fuction
 if __name__ == "__main__":
