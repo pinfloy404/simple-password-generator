@@ -1,4 +1,5 @@
 import argparse
+import sys
 import string
 import secrets
 
@@ -8,7 +9,7 @@ def get_args():
     parser = argparse.ArgumentParser(prog='Simple Password Generator', description='A simple password generator in Python.')
     
     #   Length argument
-    parser.add_argument('-l', '--length', type=int, default=16, help='Password length. By default it\'s 16 characters')
+    parser.add_argument('-l', '--length', type=int, default=16, help='Password length. By default it\'s 16 characters. Minimum of 12 characters')
 
     #   Returns parsed arguments
     return parser.parse_args()
@@ -18,6 +19,11 @@ def main():
     #   Variables
     args = get_args()
     password = ""
+
+    #   Minimum length check
+    if args.length < 12:
+        print(f'arg error: length -> {args.length} < 12')
+        sys.exit(1)
 
     #   List of characters
     characters_list = string.ascii_letters + string.digits + string.punctuation
