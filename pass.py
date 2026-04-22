@@ -94,7 +94,7 @@ def password_generator(args: argparse.Namespace, characters_dict: dict[str, int]
         if value == 0:
             characters_list.remove(key)
 
-    #   Return password generated
+    #   Returns password generated
     return password
 
 #   Prints password in terminal
@@ -129,12 +129,12 @@ def print_password(args: argparse.Namespace, password: str):
             colored_password += f"{YELLOW}{character}{RESET}"
             continue
 
-    #   Show the colored password
+    #   Shows the colored password
     print(colored_password)
 
 #   Main function
 def main():
-    #   Get arguments
+    #   Gets arguments
     args = get_args()
 
     #   Minimum length check
@@ -144,7 +144,7 @@ def main():
         #   Script exit
         sys.exit(1)
 
-    #   Divide the password length into character list length and saves the extra from mod
+    #   Divides the password length into character list length and saves the extra from mod
     selection = int(args.length / CH_LIST_LENGTH)
 
     #   Dictionary of characters
@@ -153,10 +153,10 @@ def main():
     #   Calls extra numbers function
     extra_selection(args, characters_dict)
 
-    #   Calls password generator
+    #   Calls password generator function
     password = password_generator(args, characters_dict)
 
-    #   Show generated password
+    #   Calls password coloring function
     print_password(args, password)
 
 #   Run main fuction
