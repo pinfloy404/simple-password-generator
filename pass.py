@@ -6,6 +6,9 @@ import secrets
 #   Character list length constant
 CH_LIST_LENGTH = 4
 
+#   Character list total length
+CH_TOTAL_LENGTH = len(string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation)
+
 #   Argument parser function
 def get_args():
     #   Create parser object
@@ -31,7 +34,7 @@ def extra_selection(args: argparse.Namespace, characters_dict: dict[str, int]):
         extra_range = (secrets.randbelow(extra) + 1)
 
         #   Get random index from dictionary
-        index = secrets.randbelow(len(characters_dict))
+        index = secrets.randbelow(len(characters_list))
 
         #   Get key
         key = characters_list[index]
@@ -56,23 +59,30 @@ def password_generator(args: argparse.Namespace, characters_dict: dict[str, int]
     #   Generator loop
     for _ in range(args.length):
         #   Get random index from dictionary
-        index = secrets.randbelow(len(characters_dict))
+        index = secrets.randbelow(len(characters_list))
 
         #   Get key
         key = characters_list[index]
 
-        #   Change key's value by adding the number range
+        #   Change key's value by reducing the number range
         value = (characters_dict.get(key) - 1)
 
         #   Adding key's modified value
         characters_dict[key] = value
 
+        #   Get random character
+        character = secrets.choice(characters_list[index])
+
         #   Adding a character to password string
-        password += secrets.choice(characters_list[index])
+        password += character
+
+        #   If password length is less than 94 (all ascii strings combined), then it can have unique letters
+        if args.length <= CH_TOTAL_LENGTH:
+            characters_list[index].replace(character, '')
 
         #   If selection number is 0, the selected string isn't in use anymore
         if value == 0:
-            characters_dict.pop(key)
+            characters_list.remove(key)
 
     #   Return password generated
     return password
