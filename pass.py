@@ -3,6 +3,13 @@ import sys
 import string
 import secrets
 
+#   Colors
+BLUE = '\033[94m'
+GREEN = '\033[92m'
+RED = '\033[91m'
+YELLOW = '\033[93m'
+RESET = '\033[0m'
+
 #   Character list length constant
 CH_LIST_LENGTH = 4
 
@@ -16,6 +23,9 @@ def get_args():
     
     #   Length argument
     parser.add_argument('-l', '--length', type=int, default=16, help='Password length. By default it\'s 16 characters. Minimum of 12 characters')
+
+    #   Color argument
+    parser.add_argument('-c', '--color', action='store_true', help='Enables color differentiation by character type')
 
     #   Returns parsed arguments
     return parser.parse_args()
@@ -87,6 +97,41 @@ def password_generator(args: argparse.Namespace, characters_dict: dict[str, int]
     #   Return password generated
     return password
 
+#   Prints password in terminal
+def print_password(args: argparse.Namespace, password: str):
+    #   If color argument is False, prints the password and exits correctly
+    if args.color is False:
+        print(password) 
+        sys.exit(0)
+
+    #   Colored password string
+    colored_password = ""
+
+    #   Coloring loop, if the character is in some of these character lists, then it colours with a color
+    for character in password:
+        #   Lowercase letters in blue
+        if character in string.ascii_lowercase:
+            colored_password += f"{BLUE}{character}{RESET}"
+            continue
+
+        #   Uppercase letters in green
+        if character in string.ascii_uppercase:
+            colored_password += f"{GREEN}{character}{RESET}"
+            continue
+
+        #   Digits in red
+        if character in string.digits:
+            colored_password += f"{RED}{character}{RESET}"
+            continue
+
+        #   Special characters in yellow
+        if character in string.punctuation:
+            colored_password += f"{YELLOW}{character}{RESET}"
+            continue
+
+    #   Show the colored password
+    print(colored_password)
+
 #   Main function
 def main():
     #   Get arguments
@@ -112,7 +157,7 @@ def main():
     password = password_generator(args, characters_dict)
 
     #   Show generated password
-    print(f"{password}")
+    print_password(args, password)
 
 #   Run main fuction
 if __name__ == "__main__":
