@@ -27,18 +27,27 @@ def get_args():
 #   Function to password generation
 def password_generator(args: argparse.Namespace) -> str:
     #   List of characters
-    characters_list = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+    characters_list = [string.ascii_lowercase, string.ascii_uppercase, string.digits, string.punctuation]
 
-    #   Password string
-    password = ""
+    #   list to str
+    all_characters = "".join(characters_list)
 
-    #   Generator loop
-    for _ in range(args.length):
-        #   Adding a random character to password string
-        password += secrets.choice(characters_list)
+    #   Password character list
+    pass_list = []
+
+    #   Adding a random character from every type
+    for characters in characters_list:
+        pass_list.append(secrets.choice(characters))
+
+    #   Adding a random character to password string
+    for _ in range(args.length - len(characters_list)):
+        pass_list.append(secrets.choice(all_characters))
+
+    #   Shuffles the generated password to randomize the position of the first letters
+    secrets.SystemRandom().shuffle(pass_list)
 
     #   Returns password generated
-    return password
+    return ''.join(pass_list)
 
 #   Prints password in terminal
 def print_password(args: argparse.Namespace, password: str):
