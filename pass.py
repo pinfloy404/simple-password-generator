@@ -25,17 +25,17 @@ def get_args():
     return parser.parse_args()
 
 #   Function to password generation
-def password_generator(args: argparse.Namespace, characters_list: list[str]) -> str:
+def password_generator(args: argparse.Namespace) -> str:
+    #   List of characters
+    characters_list = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+
     #   Password string
     password = ""
 
     #   Generator loop
     for _ in range(args.length):
-        #   Get random index from dictionary
-        index = secrets.randbelow(len(characters_list))
-
         #   Adding a random character to password string
-        password += secrets.choice(characters_list[index])
+        password += secrets.choice(characters_list)
 
     #   Returns password generated
     return password
@@ -90,11 +90,8 @@ def main():
         #   Script exit with error
         sys.exit(1)
 
-    #   List of characters
-    characters_list = [string.ascii_lowercase, string.ascii_uppercase, string.digits, string.punctuation]
-
     #   Calls password generator function
-    password = password_generator(args, characters_list)
+    password = password_generator(args)
 
     #   Calls password coloring function
     print_password(args, password)
